@@ -107,9 +107,9 @@ col_b1, col_b2, col_b3 = st.columns(3)
 col_b1.metric("資產總報酬率 (ROR)", f"{ror:.2f} %")
 col_b2.metric("貸款常數 (K)", f"{k:.2f} %")
 col_b3.metric("自有資金報酬率 (ROE)", f"{roe:.2f} %")
-if ror > k:
+if ror > k + 0.01:
     st.success(f"正槓桿效應：對購屋者有利，房屋收益 ({ror:.2f}%) 大於借貸成本 ({k:.2f}%)，ROE 被放大至 {roe:.2f}%。")
-elif ror < k:
+elif ror < k - 0.01:
     st.error(f"負槓桿效應：對銀行有利，房屋收益 ({ror:.2f}%) 小於借貸成本 ({k:.2f}%)，ROE 被拖垮至 {roe:.2f}%。")
 else:
     st.info("槓桿不正不負：資產報酬率與借款成本打平。")
