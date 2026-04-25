@@ -140,7 +140,6 @@ for year in range(1, int(holding_years) + 1):
         cash_flows.append(terminal_cf)
 
 # 計算NPV
-# 計算NPV
 npv = 0
 for i, cf in enumerate(cash_flows):
     npv += cf / ((1 + discount_rate / 100) ** i)
