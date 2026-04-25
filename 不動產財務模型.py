@@ -140,19 +140,29 @@ for year in range(1, int(holding_years) + 1):
         cash_flows.append(terminal_cf)
 
 # 計算NPV
+# 計算NPV
 npv = 0
 for i, cf in enumerate(cash_flows):
     npv += cf / ((1 + discount_rate / 100) ** i)
 
+# 計算IRR (增加防呆機制：攔截 nan)
 try:
-    irr = npf.irr(cash_flows) * 100
+    calculated_irr = npf.irr(cash_flows)
+    # 檢查是否算不出 IRR (產生 nan)
+    if pd.isna(calculated_irr):
+        irr = 0.0
+    else:
+        irr = calculated_irr * 100
 except:
-    irr = 0
+    irr = 0.0
 
+# 顯示結果
 st.markdown(f"考慮未來 **{int(holding_years)}** 年的現金流，並以折現率 **{discount_rate:.2f}%** 進行評估：")
 col_c1, col_c2 = st.columns(2)
 col_c1.metric("淨現值 (NPV)", f"{npv:.2f} 萬元")
 col_c2.metric("內部報酬率 (IRR)", f"{irr:.2f} %")
+
+# 決策判定
 if npv > 0:
     st.success(f"具備投資價值：NPV 大於 0，代表此不動產的真實回報 (IRR {irr:.2f}%) 高於您要求的折現率 ({discount_rate:.2f}%)。")
 else:
